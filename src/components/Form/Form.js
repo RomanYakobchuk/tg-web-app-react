@@ -1,4 +1,4 @@
-import {useEffect, useState} from "react";
+import {useCallback, useEffect, useState} from "react";
 
 import "./Form.css"
 import {useTelegram} from "../../hooks/useTelegram";
@@ -11,6 +11,22 @@ export const Form = () => {
 
     const {tg} = useTelegram();
 
+    const onSendData = useCallback(() => {
+        const data = {
+            city,
+            department,
+            sex
+        }
+        tg.sendDate(JSON.stringify(data))
+    }, [])
+
+    useEffect(() => {
+        tg.onEvent("mainButtonClicked", onSendData)
+        return () => {
+            tg.offEvent("mainButtonClicked", onSendData)
+        }
+    }, [])
+
     useEffect(() => {
         tg.MainButton.setParams({
             text: "Відправити дані"
@@ -18,9 +34,9 @@ export const Form = () => {
     }, [])
 
     useEffect(() => {
-        if(!city || !department){
+        if (!city || !department) {
             tg.MainButton.hide()
-        }else {
+        } else {
             tg.MainButton.show()
         }
     }, [city, department])
@@ -39,7 +55,8 @@ export const Form = () => {
         <div className={"form"}>
             <h3>Введіть ваші дані</h3>
             <input className={"input"} type="text" placeholder={"Місто"} value={city} onChange={onChangeCity}/>
-            <input className={"input"} type="text" placeholder={"Відділення"} value={department} onChange={onChangeDepartment}/>
+            <input className={"input"} type="text" placeholder={"Відділення"} value={department}
+                   onChange={onChangeDepartment}/>
             <select className={"select"} value={sex} onChange={onChangeSex}>
                 <option value={"male"}>Чоловік</option>
                 <option value={"female"}>Жінка</option>
