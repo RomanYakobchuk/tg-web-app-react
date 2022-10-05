@@ -17,7 +17,7 @@ export const Form = () => {
             department,
             sex
         }
-        tg.sendDate(JSON.stringify(data))
+        tg.sendData(JSON.stringify(data))
     }, [])
 
     useEffect(() => {
