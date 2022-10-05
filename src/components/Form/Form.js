@@ -7,7 +7,7 @@ export const Form = () => {
 
     const [city, setCity] = useState("")
     const [department, setDepartment] = useState("")
-    const [sex, setSex] = useState("")
+    const [sex, setSex] = useState("male")
 
     const {tg} = useTelegram();
 
